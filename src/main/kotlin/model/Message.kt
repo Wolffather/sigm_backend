@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Message(
-    private val text: String,
-    private val author: User,
+    val text: String,
+    val author: String = "Unknown",
+    val roomId: Long = 0L
 )
