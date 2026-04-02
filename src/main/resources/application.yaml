@@ -4,3 +4,7 @@ ktor:
             - ru.hey_savvy.ApplicationKt.module
     deployment:
         port: 8080
+jwt:
+    secret: ${JWT_SECRET}
+    issuer: "sigm"
+    audience: "sigm-users"

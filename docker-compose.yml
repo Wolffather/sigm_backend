@@ -1,0 +1,11 @@
+services:
+
+  postgres:
+    image: postgres:14.8
+    container_name: sigm
+    environment:
+      POSTGRES_DB: sigm_db
+      POSTGRES_USER: sigm_adm_usr
+      POSTGRES_PASSWORD: sigm_adm_psswrd
+    ports:
+      - "5434:5432"
