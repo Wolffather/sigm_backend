@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.hey_savvy.tables.MessagesTable
+import ru.hey_savvy.tables.RoomMembersTable
 import ru.hey_savvy.tables.RoomsTable
 import ru.hey_savvy.tables.UsersTable
 
@@ -16,6 +17,6 @@ fun configureDatabase() {
     )
 
     transaction {
-        SchemaUtils.create(UsersTable, RoomsTable, MessagesTable)
+        SchemaUtils.create(UsersTable, RoomsTable, MessagesTable, RoomMembersTable)
     }
 }
