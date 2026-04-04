@@ -29,7 +29,9 @@ class UserService {
             UserProfile(
                 username = it[UsersTable.username],
                 status = it[UsersTable.status],
-                avatarUrl = it[UsersTable.avatarUrl]
+                avatarUrl = it[UsersTable.avatarUrl],
+                firstName = it[UsersTable.firstName],
+                lastName = it[UsersTable.lastName]
             )
         }
     }
@@ -38,6 +40,8 @@ class UserService {
         UsersTable.update({ UsersTable.id eq id }) {
             update.status?.let { s -> it[status] = s }
             update.avatarUrl?.let { a -> it[avatarUrl] = a }
+            update.firstName?.let { f -> it[firstName] = f }
+            update.lastName?.let { l -> it[lastName] = l }
         }
     }
 }

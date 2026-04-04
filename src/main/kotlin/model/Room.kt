@@ -11,7 +11,7 @@ data class Room(
 
 @Serializable
 enum class RoomType{
-    CHAT,
+    GROUP,
     CHANNEL,
-    PRIVATE
+    CHAT
 }

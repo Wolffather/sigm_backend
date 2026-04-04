@@ -45,7 +45,7 @@ class RoomService {
                 .join(members2, JoinType.INNER, RoomsTable.id, members2[RoomMembersTable.roomId])
                 .selectAll()
                 .where {
-                    (RoomsTable.type eq RoomType.PRIVATE.name) and
+                    (RoomsTable.type eq RoomType.CHAT.name) and
                             (members1[RoomMembersTable.userId] eq userId1) and
                             (members2[RoomMembersTable.userId] eq userId2)
                 }
@@ -57,7 +57,7 @@ class RoomService {
     fun createPrivateChat(userId1: Long, userId2: Long): Room = transaction {
         val result = RoomsTable.insert {
             it[name] = "private"
-            it[type] = RoomType.PRIVATE.name
+            it[type] = RoomType.CHAT.name
         }
         val roomId = result[RoomsTable.id]
 
@@ -72,7 +72,7 @@ class RoomService {
             it[role] = MemberRole.OWNER.name
         }
 
-        Room(roomId, "private", RoomType.PRIVATE)
+        Room(roomId, "private", RoomType.CHAT)
     }
 
     fun create(room: Room, ownerId: Long): Room = transaction {

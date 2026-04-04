@@ -8,5 +8,7 @@ object UsersTable : Table("users") {
     val password = varchar("password", 255)
     val status = varchar("status", 255).default("")
     val avatarUrl = varchar("avatar_url", 500).default("")
+    val firstName = varchar("first_name", 255).default("")
+    val lastName = varchar("last_name", 255).default("")
     override val primaryKey = PrimaryKey(id)
 }
