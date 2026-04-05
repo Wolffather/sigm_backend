@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ProfileUpdate(
-    val status: String? = null,
+    val status: UserStatus? = null,
     val avatarUrl: String? = null,
     val firstName: String? = null,
     val lastName: String? = null
