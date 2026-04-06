@@ -1,14 +1,17 @@
 package ru.hey_savvy.services
 
 import org.jetbrains.exposed.sql.JoinType
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import ru.hey_savvy.model.Room
 import ru.hey_savvy.model.RoomType
 import ru.hey_savvy.tables.MemberRole
+import ru.hey_savvy.tables.MessagesTable
 import ru.hey_savvy.tables.RoomMembersTable
 import ru.hey_savvy.tables.RoomsTable
 import ru.hey_savvy.tables.UsersTable
@@ -102,5 +105,27 @@ class RoomService {
             .selectAll()
             .where { RoomMembersTable.roomId eq roomId }
             .map { it[UsersTable.username] }
+    }
+
+    fun leave(userId: Long, roomId: Long) = transaction {
+        RoomMembersTable.deleteWhere {
+            (RoomMembersTable.userId eq userId) and (RoomMembersTable.roomId eq roomId)
+        }
+    }
+
+    fun delete(roomId: Long) = transaction {
+        RoomMembersTable.deleteWhere { RoomMembersTable.roomId eq roomId }
+        MessagesTable.deleteWhere { MessagesTable.roomId eq roomId }
+        RoomsTable.deleteWhere { RoomsTable.id eq roomId }
+    }
+
+    fun isOwner(userId: Long, roomId: Long): Boolean = transaction {
+        RoomMembersTable.selectAll()
+            .where {
+                (RoomMembersTable.userId eq userId) and
+                        (RoomMembersTable.roomId eq roomId) and
+                        (RoomMembersTable.role eq MemberRole.OWNER.name)
+            }
+            .count() > 0
     }
 }

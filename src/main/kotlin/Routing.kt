@@ -26,7 +26,7 @@ fun Application.configureRouting(
 ) {
     routing {
         authRoutes(jwtSecret, jwtIssuer, jwtAudience)
-        webSocketRoutes(jwtIssuer, jwtAudience, jwtSecret)
+        webSocketRoutes(jwtSecret, jwtIssuer, jwtAudience)
 
         authenticate("auth-jwt") {
             userRoutes()

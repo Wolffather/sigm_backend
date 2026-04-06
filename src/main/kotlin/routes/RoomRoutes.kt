@@ -6,8 +6,10 @@ import io.ktor.server.auth.principal
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
+import ru.hey_savvy.getRoomAndUser
 import ru.hey_savvy.getUserId
 import ru.hey_savvy.model.Room
 import ru.hey_savvy.roomService
@@ -73,5 +75,26 @@ fun Route.roomRoutes() {
 
         val newRoom = roomService.create(room, userId)
         call.respond(HttpStatusCode.Created, newRoom)
+    }
+
+    delete("/rooms/{id}") {
+        val (roomId, userId) = call.getRoomAndUser(userService)
+            ?: run { call.respond(HttpStatusCode.BadRequest); return@delete }
+
+        if (!roomService.isOwner(userId, roomId)) {
+            call.respond(HttpStatusCode.Forbidden, "Only owner can delete room")
+            return@delete
+        }
+
+        roomService.delete(roomId)
+        call.respond(HttpStatusCode.OK, "Room deleted")
+    }
+
+    post("/rooms/{id}/leave") {
+        val (roomId, userId) = call.getRoomAndUser(userService)
+            ?: run { call.respond(HttpStatusCode.BadRequest); return@post }
+
+        roomService.leave(userId, roomId)
+        call.respond(HttpStatusCode.OK, "Left room")
     }
 }

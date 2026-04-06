@@ -11,3 +11,9 @@ fun ApplicationCall.getUserId(userService: UserService): Long? {
         ?: return null
     return userService.findByUsername(username)?.get(UsersTable.id)
 }
+
+fun ApplicationCall.getRoomAndUser(userService: UserService): Pair<Long, Long>? {
+    val roomId = parameters["id"]?.toLongOrNull() ?: return null
+    val userId = getUserId(userService) ?: return null
+    return Pair(roomId, userId)
+}
